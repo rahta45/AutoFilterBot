@@ -4,24 +4,20 @@ from os import environ
 from Script import script 
 
 id_pattern = re.compile(r'^.\d+$')
+
 def is_enabled(value, default):
-    if value.lower() in ["true", "yes", "1", "enable", "y"]:
-        return True
-    elif value.lower() in ["false", "no", "0", "disable", "n"]:
-        return False
-    else:
-        return default
+    return value.lower() in ["true", "yes", "1", "enable", "y"] if isinstance(value, str) else default
 
 # Bot information
 SESSION = environ.get('SESSION', 'Media_search')
-API_ID = int(environ('API_ID', '26649585'))
-API_HASH = environ('API_HASH', '588a3ea6fd01ae88bd2e10fed7d55b2c')
-BOT_TOKEN = environ('BOT_TOKEN')
+API_ID = int(environ.get('API_ID', '26649585'))
+API_HASH = environ.get('API_HASH', '588a3ea6fd01ae88bd2e10fed7d55b2c')
+BOT_TOKEN = environ.get('BOT_TOKEN')
 
 # Bot settings
 CACHE_TIME = int(environ.get('CACHE_TIME', 300))
-USE_CAPTION_FILTER = bool(environ.get('USE_CAPTION_FILTER', False))
-PICS = (environ.get('PICS', 'https://envs.sh/ykQ.jpg')).split()
+USE_CAPTION_FILTER = is_enabled(environ.get('USE_CAPTION_FILTER', "False"), False)
+PICS = environ.get('PICS', 'https://envs.sh/ykQ.jpg').split()
 SPELL_IMG = environ.get("SPELL_IMG", "https://telegra.ph/file/b860e8d8a234384950587.jpg")
 WVD = environ.get("WVD", "https://telegra.ph/file/b735f93c8eeef4167c6a1.mp4")
 NO_IMDB = environ.get("NO_IMDB", "https://graph.org/file/5c94a977943ac2b777d93.jpg")
@@ -42,37 +38,40 @@ DATABASE_NAME = environ.get('DATABASE_NAME', "Rahat")
 COLLECTION_NAME = environ.get('COLLECTION_NAME', 'Rahat')
 
 # AI
-HORRI_API_KEY = environ.get('HORRI_API_KEY', 'horridapi_Uwk1YJbLSibv2rf88EBPOQ_free_key') # You can get api key here https://t.me/Mrz_bots/222
+HORRI_API_KEY = environ.get('HORRI_API_KEY', 'horridapi_Uwk1YJbLSibv2rf88EBPOQ_free_key')  
 BOT_USERNAME = environ.get('BOT_USERNAME', 'MoviesMake_rbot')
 
 # Others
-LOG_CHANNEL = int(environ.get('LOG_CHANNEL', '-1002316472437'))
+LOG_CHANNEL = int(environ.get('LOG_CHANNEL', '-1002316472437')) if environ.get('LOG_CHANNEL') else None
 SUPPORT_CHAT = environ.get('SUPPORT_CHAT', 'https://t.me/+FHPsQEnXiA8xMGI1')
-UPDATE_CHANNEL = environ.get('UPDATE_CHANNEL', 'https://t.me/FILME_MAKER') # add here your update channel link
-P_TTI_SHOW_OFF = is_enabled((environ.get('P_TTI_SHOW_OFF', "False")), False)
-IMDB = is_enabled((environ.get('IMDB', "True")), True)
-AUTO_DELETE = is_enabled((environ.get('AUTO_DELETE', "False")), False)
-SINGLE_BUTTON = is_enabled((environ.get('SINGLE_BUTTON', "True")), True)
+UPDATE_CHANNEL = environ.get('UPDATE_CHANNEL', 'https://t.me/FILME_MAKER')
+
+P_TTI_SHOW_OFF = is_enabled(environ.get('P_TTI_SHOW_OFF', "False"), False)
+IMDB = is_enabled(environ.get('IMDB', "True"), True)
+AUTO_DELETE = is_enabled(environ.get('AUTO_DELETE', "False"), False)
+SINGLE_BUTTON = is_enabled(environ.get('SINGLE_BUTTON', "True"), True)
 CUSTOM_FILE_CAPTION = environ.get("CUSTOM_FILE_CAPTION", f"{script.CAPTION}")
 BATCH_FILE_CAPTION = environ.get("BATCH_FILE_CAPTION", CUSTOM_FILE_CAPTION)
-PORT = os.environ.get("PORT", "8080")
-NO_RESULTS_MSG = bool(environ.get("NO_RESULTS_MSG", False))
+PORT = environ.get("PORT", "8080")
+NO_RESULTS_MSG = is_enabled(environ.get("NO_RESULTS_MSG", "False"), False)
 IMDB_TEMPLATE = environ.get("IMDB_TEMPLATE", f"{script.IMDB_TEMPLATE_TXT}")
 LONG_IMDB_DESCRIPTION = is_enabled(environ.get("LONG_IMDB_DESCRIPTION", "False"), False)
 SPELL_CHECK_REPLY = is_enabled(environ.get("SPELL_CHECK_REPLY", "True"), True)
-MAX_LIST_ELM = environ.get("MAX_LIST_ELM", None)
-INDEX_REQ_CHANNEL = int(environ.get('INDEX_REQ_CHANNEL', LOG_CHANNEL))
-FILE_STORE_CHANNEL = [int(ch) for ch in (environ.get('FILE_STORE_CHANNEL', '-1002316472437')).split()]
-MELCOW_NEW_USERS = is_enabled((environ.get('MELCOW_NEW_USERS', "True")), True)
-PROTECT_CONTENT = is_enabled((environ.get('PROTECT_CONTENT', "False")), False)
-PUBLIC_FILE_STORE = is_enabled((environ.get('PUBLIC_FILE_STORE', "True")), True)
+MAX_LIST_ELM = int(environ.get("MAX_LIST_ELM", 10)) if environ.get("MAX_LIST_ELM") else None
+INDEX_REQ_CHANNEL = int(environ.get('INDEX_REQ_CHANNEL', LOG_CHANNEL)) if environ.get('INDEX_REQ_CHANNEL') else LOG_CHANNEL
+FILE_STORE_CHANNEL = [int(ch) for ch in environ.get('FILE_STORE_CHANNEL', '-1002316472437').split()]
+MELCOW_NEW_USERS = is_enabled(environ.get('MELCOW_NEW_USERS', "True"), True)
+PROTECT_CONTENT = is_enabled(environ.get('PROTECT_CONTENT', "False"), False)
+PUBLIC_FILE_STORE = is_enabled(environ.get('PUBLIC_FILE_STORE', "True"), True)
 
-LOG_STR = "Current Cusomized Configurations are:-\n"
-LOG_STR += ("IMDB Results are enabled, Bot will be showing imdb details for you queries.\n" if IMDB else "IMBD Results are disabled.\n")
-LOG_STR += ("P_TTI_SHOW_OFF found , Users will be redirected to send /start to Bot PM instead of sending file file directly\n" if P_TTI_SHOW_OFF else "P_TTI_SHOW_OFF is disabled files will be send in PM, instead of sending start.\n")
-LOG_STR += ("SINGLE_BUTTON is Found, filename and files size will be shown in a single button instead of two separate buttons\n" if SINGLE_BUTTON else "SINGLE_BUTTON is disabled , filename and file_sixe will be shown as different buttons\n")
-LOG_STR += (f"CUSTOM_FILE_CAPTION enabled with value {CUSTOM_FILE_CAPTION}, your files will be send along with this customized caption.\n" if CUSTOM_FILE_CAPTION else "No CUSTOM_FILE_CAPTION Found, Default captions of file will be used.\n")
-LOG_STR += ("Long IMDB storyline enabled." if LONG_IMDB_DESCRIPTION else "LONG_IMDB_DESCRIPTION is disabled , Plot will be shorter.\n")
-LOG_STR += ("Spell Check Mode Is Enabled, bot will be suggesting related movies if movie not found\n" if SPELL_CHECK_REPLY else "SPELL_CHECK_REPLY Mode disabled\n")
-LOG_STR += (f"MAX_LIST_ELM Found, long list will be shortened to first {MAX_LIST_ELM} elements\n" if MAX_LIST_ELM else "Full List of casts and crew will be shown in imdb template, restrict them by adding a value to MAX_LIST_ELM\n")
-LOG_STR += f"Your current IMDB template is {IMDB_TEMPLATE}"
+LOG_STR = "Current Customized Configurations are:-\n"
+LOG_STR += "IMDB Results are enabled.\n" if IMDB else "IMDB Results are disabled.\n"
+LOG_STR += "P_TTI_SHOW_OFF enabled.\n" if P_TTI_SHOW_OFF else "P_TTI_SHOW_OFF disabled.\n"
+LOG_STR += "SINGLE_BUTTON is enabled.\n" if SINGLE_BUTTON else "SINGLE_BUTTON is disabled.\n"
+LOG_STR += f"CUSTOM_FILE_CAPTION: {CUSTOM_FILE_CAPTION}\n" if CUSTOM_FILE_CAPTION else "No CUSTOM_FILE_CAPTION found.\n"
+LOG_STR += "Long IMDB storyline enabled.\n" if LONG_IMDB_DESCRIPTION else "Short IMDB storyline enabled.\n"
+LOG_STR += "Spell Check Mode is enabled.\n" if SPELL_CHECK_REPLY else "Spell Check Mode is disabled.\n"
+LOG_STR += f"MAX_LIST_ELM: {MAX_LIST_ELM}\n" if MAX_LIST_ELM else "Full list will be shown.\n"
+LOG_STR += f"Your current IMDB template is {IMDB_TEMPLATE}\n"
+
+print(LOG_STR)
