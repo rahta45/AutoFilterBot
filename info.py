@@ -42,7 +42,7 @@ HORRI_API_KEY = environ.get('HORRI_API_KEY', 'horridapi_Uwk1YJbLSibv2rf88EBPOQ_f
 BOT_USERNAME = environ.get('BOT_USERNAME', 'MoviesMake_rbot')
 
 # Others
-LOG_CHANNEL = int(environ.get('LOG_CHANNEL', '-1002316472437')) if environ.get('LOG_CHANNEL') else None
+LOG_CHANNEL = int(environ.get('LOG_CHANNEL', '-1002316472437')) 
 SUPPORT_CHAT = environ.get('SUPPORT_CHAT', 'https://t.me/+FHPsQEnXiA8xMGI1')
 UPDATE_CHANNEL = environ.get('UPDATE_CHANNEL', 'https://t.me/FILME_MAKER')
 
