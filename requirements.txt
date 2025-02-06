@@ -1,4 +1,4 @@
-git+https://github.com/KurimuzonAkuma/pyrogram 
+pyrogram 
 tgcrypto
 pymongo[srv]
 motor==2.5.1
