@@ -104,5 +104,6 @@ class Bot(Client):
 
 
 
-app = Bot()
+# Pyrogram লাইব্রেরির নতুন আপডেট অনুযায়ী `use_qr` সরিয়ে দিন
+app.start()  
 app.run()
